@@ -16,6 +16,10 @@ void gmain() {
     const int totalnum = 10;//10個のMIKANを用意する
     struct MIKAN m[totalnum];
     int curnum = 0;
+    for (int i = 0; i < totalnum; i++) {
+        m[i].tx = kpx - 175;
+        m[i].ty = kpy - 43 - 50 * i;
+    }
     while (notQuit) {
         if (isTrigger(MOUSE_LBUTTON)) {  //左クリックしたらミカンを表示
             if (curnum < totalnum) {
@@ -24,17 +28,23 @@ void gmain() {
                 curnum++;
             }
         }
+
+        for (int i = 0; i < curnum; i++) {
+            float vx = m[i].tx - m[i].px;
+            float vy = m[i].ty - m[i].py;
+        }
+
         clear(220);
         rectMode(CENTER);
         image(kotatuImg, kpx, kpy);
         for (int i = 0; i < curnum; i++) {
             image(mikanImg, m[i].px, m[i].py);
         }
-        image(mikanImg, mouseX, mouseY);
-        textSize(50);
-        fill(0);
-        text(mouseX - kpx, 0, 50);
-        text(mouseY - kpy, 0, 100);
+        //image(mikanImg, mouseX, mouseY);
+        //textSize(50);
+        //fill(0);
+        //text(mouseX - kpx, 0, 50);
+        //text(mouseY - kpy, 0, 100);
     }
 }
 
