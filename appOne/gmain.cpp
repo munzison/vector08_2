@@ -1,11 +1,16 @@
 #if 1
 #include"libOne.h"
+//t=ターゲット
+
 void gmain() {
     window(1920, 1080, full);
     int kotatuImg = loadImage("assets\\kotatu0.png");
+    int kotatucolorImg = loadImage("assets\\kotatu1.png");
     int mikanImg = loadImage("assets\\mikan.png");
     int backImg = loadImage("assets\\back.png");
 
+    //int bImg = backImg;
+    int kImg = kotatuImg;
     float kpx = width / 2;
     float kpy = height / 2;
 
@@ -20,6 +25,7 @@ void gmain() {
         m[i].tx = kpx - 175;
         m[i].ty = kpy - 43 - 50 * i;
     }
+    float speed = 20;//ミカンの速度
     while (notQuit) {
         if (isTrigger(MOUSE_LBUTTON)) {  //左クリックしたらミカンを表示
             if (curnum < totalnum) {
@@ -28,23 +34,39 @@ void gmain() {
                 curnum++;
             }
         }
-
+        if (isTrigger(MOUSE_RBUTTON)) {//左クリックでリセット
+            curnum = 0;
+            m[totalnum - 1].px = -100;
+        }
+        //ミカン移動処理
         for (int i = 0; i < curnum; i++) {
             float vx = m[i].tx - m[i].px;
             float vy = m[i].ty - m[i].py;
+            float mag = sqrt(vx * vx + vy * vy);
+            if (mag > speed) {             //magの値がspeedの値より小さくなるまで移動する
+                m[i].px += vx / mag * speed;
+                m[i].py += vy / mag * speed;
+            }
+            else {//magがspeedより小さくなったら t の値を p に直接入れる
+                m[i].px = m[i].tx;
+                m[i].py = m[i].ty;
+            }
+        }
+        int last = totalnum - 1;
+        if (m[last].px == m[last].tx) {//最後のミカンが到達したら色をつける
+            kImg = kotatucolorImg;
+        }
+        else{
+            kImg = kotatuImg;
         }
 
         clear(220);
         rectMode(CENTER);
-        image(kotatuImg, kpx, kpy);
+        image(kImg, kpx, kpy);
+
         for (int i = 0; i < curnum; i++) {
             image(mikanImg, m[i].px, m[i].py);
         }
-        //image(mikanImg, mouseX, mouseY);
-        //textSize(50);
-        //fill(0);
-        //text(mouseX - kpx, 0, 50);
-        //text(mouseY - kpy, 0, 100);
     }
 }
 
