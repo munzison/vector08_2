@@ -9,7 +9,7 @@ void gmain() {
     int mikanImg = loadImage("assets\\mikan.png");
     int backImg = loadImage("assets\\back.png");
 
-    //int bImg = backImg;
+    int bImg = backImg;
     int kImg = kotatuImg;
     float kpx = width / 2;
     float kpy = height / 2;
@@ -62,8 +62,10 @@ void gmain() {
 
         clear(220);
         rectMode(CENTER);
+        if (m[last].px == m[last].tx) {
+            image(bImg, kpx, kpy);
+        }
         image(kImg, kpx, kpy);
-
         for (int i = 0; i < curnum; i++) {
             image(mikanImg, m[i].px, m[i].py);
         }
